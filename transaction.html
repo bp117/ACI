@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transaction Details</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <header>
+    <h1>ACI Money Transfer System</h1>
+    <nav class="tabs">
+      <button class="tab">Entry</button>
+      <button class="tab active">Repair</button>
+      <button class="tab">Verify</button>
+      <button class="tab">Exception Processing</button>
+      <button class="tab">High Amount Verify</button>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Warnings Section -->
+    <div class="warnings">
+      <p>Multiple warnings - <a href="#">see history</a></p>
+    </div>
+
+    <!-- Title and Command Dropdown -->
+    <div class="title-row">
+      <h2>Transaction Details</h2>
+      <div class="command-section">
+        <label for="command">Select Command:</label>
+        <select id="command">
+          <option value="none" selected>None</option>
+          <option value="validate">Validate</option>
+          <option value="cancel">Cancel</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Transaction Form -->
+    <form>
+      <!-- Top Section -->
+      <fieldset>
+        <legend>Transaction Information</legend>
+        <div class="form-grid">
+          <div>
+            <label for="source">Source:</label>
+            <input type="text" id="source" value="SWF" disabled>
+          </div>
+          <div>
+            <label for="caller">Caller:</label>
+            <input type="text" id="caller">
+          </div>
+          <div>
+            <label for="extension">Extension:</label>
+            <input type="text" id="extension">
+          </div>
+          <div>
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" value="250000.00">
+          </div>
+          <div>
+            <label for="currency">Currency:</label>
+            <select id="currency">
+              <option value="USD" selected>USD</option>
+              <option value="EUR">EUR</option>
+            </select>
+          </div>
+          <div>
+            <label for="rate">Rate:</label>
+            <input type="text" id="rate">
+          </div>
+          <div>
+            <label for="contract">Contract:</label>
+            <input type="text" id="contract">
+          </div>
+          <div>
+            <label for="type">Type:</label>
+            <select id="type">
+              <option value="FTR" selected>FTR</option>
+            </select>
+          </div>
+          <div>
+            <label for="due-date">Due Date:</label>
+            <input type="date" id="due-date">
+          </div>
+          <div>
+            <label for="test">Test:</label>
+            <input type="text" id="test">
+          </div>
+          <div>
+            <label for="message-type">Message Type:</label>
+            <input type="text" id="message-type">
+          </div>
+          <div>
+            <label for="dfa-type">DFA Type:</label>
+            <input type="text" id="dfa-type">
+          </div>
+          <div>
+            <label for="payment-purpose">Payment Purpose:</label>
+            <select id="payment-purpose">
+              <option value="none" selected>None</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Debit and Credit Section -->
+      <div class="form-grid-columns">
+        <fieldset class="half-width">
+          <legend>Debit</legend>
+          <div>
+            <label for="debit-amount">Amount:</label>
+            <input type="number" id="debit-amount">
+          </div>
+          <div>
+            <label for="debit-date">Debit Value Date:</label>
+            <input type="date" id="debit-date">
+          </div>
+          <div>
+            <label for="gl-recon">GL Recon:</label>
+            <input type="text" id="gl-recon">
+          </div>
+          <div>
+            <label for="department-code">Department Code:</label>
+            <input type="text" id="department-code">
+          </div>
+        </fieldset>
+
+        <fieldset class="half-width">
+          <legend>Credit</legend>
+          <div>
+            <label for="credit-amount">Amount:</label>
+            <input type="number" id="credit-amount">
+          </div>
+          <div>
+            <label for="credit-date">Credit Value Date:</label>
+            <input type="date" id="credit-date">
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Raw Mainframe Message -->
+      <fieldset>
+        <legend>Instructions</legend>
+        <div>
+          <label for="incoming-text">Select Text:</label>
+          <select id="incoming-text">
+            <option value="incoming" selected>Incoming Text</option>
+            <option value="outgoing">Outgoing Text</option>
+          </select>
+        </div>
+       
+        <pre id="mainframeMessage">
+\{3:104:T47K4E9486D0982}
+20:Tax ref num
+21:Account to beneficiary
+22A:Tested amount field
+22B:Pending transaction
+53D:Sender’s corporate bank
+54D:Accounts with bank
+71A:Details of payment
+   More details…
+/PAY/001
+/CRED/(USD)450000
+</pre>
+      </fieldset>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button type="button" class="btn validate">Validate</button>
+        <button type="reset" class="btn cancel">Cancel</button>
+      </div>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 ACI Money Transfer System. All rights reserved.</p>
+  </footer>
+</body>
+</html>

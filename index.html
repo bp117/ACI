@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACI Money Transfer System</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <div class="header-left">
+      <h1>ACI Money Transfer System</h1>
+    </div>
+    <div class="header-right">
+      <p>User: John Doe</p>
+      <p>Bank: 845 | Area: prod</p>
+      <p>Failed Logins: 0 | Last Login: Dec 04, 2024 21:20:43</p>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="tabs">
+    <button class="tab active">Entry</button>
+    <button class="tab">Repair</button>
+    <button class="tab">Verify</button>
+    <button class="tab">Exception Processing</button>
+    <button class="tab">High Amount Verify</button>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <div class="queue-header">
+      <div class="queue-summary">
+        <h2>Queue Summary: <span id="messageCount">46</span> messages</h2>
+      </div>
+      <div class="queue-filters">
+        <label>
+          <input type="radio" name="filter" value="active" checked> Active
+        </label>
+        <label>
+          <input type="radio" name="filter" value="all"> All
+        </label>
+      </div>
+    </div>
+
+    <!-- Queue Table -->
+    <div class="queue-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Priority</th>
+            <th>Bank</th>
+            <th>Location</th>
+            <th>Queue</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody id="queueData">
+          <!-- Rows populated dynamically -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn reset" id="resetButton">Reset</button>
+      <button class="btn detail" id="detailButton">Detail</button>
+      <button class="btn submit" id="submitButton">Submit</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 ACI Money Transfer System. All rights reserved.</p>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
