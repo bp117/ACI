@@ -5,6 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Transaction Details</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .command-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .error {
+      color: red;
+      display: none;
+    }
+  </style>
 </head>
 <body>
   <!-- Header Section -->
@@ -24,15 +47,20 @@
     <!-- Warnings Section -->
     <div class="warnings">
       <p>Multiple warnings - <a href="#">see history</a></p>
+      <p id="bic-error-message" class="error">Invalid BIC code. Please enter a valid BIC. Example: DEUTDEFF</p>
     </div>
 
     <!-- Title and Command Dropdown -->
     <div class="title-row">
       <h2>Transaction Details</h2>
       <div class="command-section">
-        <label for="command">Select Command:</label>
+        <div class="action-buttons">
+          <button type="button" class="btn validate" id="validateBtn">Validate</button>
+          <button type="reset" class="btn cancel">Cancel</button>
+          <button type="submit" class="btn submit" id="submitBtn" disabled>Submit</button>
+        </div>
         <select id="command">
-          <option value="none" selected>None</option>
+          <option value="none" selected>Select Command:</option>
           <option value="validate">Validate</option>
           <option value="cancel">Cancel</option>
         </select>
@@ -40,7 +68,7 @@
     </div>
 
     <!-- Transaction Form -->
-    <form>
+    <form id="transactionForm">
       <!-- Top Section -->
       <fieldset>
         <legend>Transaction Information</legend>
@@ -59,7 +87,7 @@
           </div>
           <div>
             <label for="amount">Amount:</label>
-            <input type="number" id="amount" value="250000.00">
+            <input type="number" id="amount">
           </div>
           <div>
             <label for="currency">Currency:</label>
@@ -109,12 +137,18 @@
 
       <!-- Debit and Credit Section -->
       <div class="form-grid-columns">
+        <!-- Debit Section -->
         <fieldset class="half-width">
           <legend>Debit</legend>
-          <div>
-            <label for="debit-amount">Amount:</label>
-            <input type="number" id="debit-amount">
+          <div class="form-row">
+            <label for="debit-type">Debit:</label>
+            <select id="debit-type" class="one-char-width">
+              <option value="D" selected>D</option>
+              <option value="S">S</option>
+            </select>
+            <input type="text" id="debit-account" class="debit-account">
           </div>
+          
           <div>
             <label for="debit-date">Debit Value Date:</label>
             <input type="date" id="debit-date">
@@ -127,10 +161,35 @@
             <label for="department-code">Department Code:</label>
             <input type="text" id="department-code">
           </div>
+          <div>
+            <label for="routing-code">Routing Code:</label>
+            <input type="text" id="routing-code">
+          </div>
+          <div>
+            <label for="debit-address">Debit Address:</label>
+            <textarea id="debit-address" rows="3"></textarea>
+          </div>
         </fieldset>
 
+        <!-- Credit Section -->
         <fieldset class="half-width">
           <legend>Credit</legend>
+        
+          <div class="form-row">
+            <label for="credit-type">Credit:</label>
+            <select id="credit-type" class="one-char-width">
+              <option value="S" selected>S</option>
+              <option value="D">D</option>
+            </select>
+            <input type="text" id="credit-account" class="debit-account">
+          </div>
+          <div>
+            <label for="credit-channel">Channel:</label>
+            <select id="credit-channel">
+              <option value="CHP" selected>CHP</option>
+              <option value="SWF">SWF</option>
+            </select>
+          </div>
           <div>
             <label for="credit-amount">Amount:</label>
             <input type="number" id="credit-amount">
@@ -138,6 +197,18 @@
           <div>
             <label for="credit-date">Credit Value Date:</label>
             <input type="date" id="credit-date">
+          </div>
+          <div>
+            <label for="credit-department">Department Code:</label>
+            <input type="text" id="credit-department">
+          </div>
+          <div>
+            <label for="credit-routing">Routing Code:</label>
+            <input type="text" id="credit-routing">
+          </div>
+          <div>
+            <label for="credit-address">Credit Address:</label>
+            <textarea id="credit-address" rows="3"></textarea>
           </div>
         </fieldset>
       </div>
@@ -152,7 +223,6 @@
             <option value="outgoing">Outgoing Text</option>
           </select>
         </div>
-       
         <pre id="mainframeMessage">
 \{3:104:T47K4E9486D0982}
 20:Tax ref num
@@ -167,17 +237,75 @@
 /CRED/(USD)450000
 </pre>
       </fieldset>
-
-      <!-- Action Buttons -->
-      <div class="action-buttons">
-        <button type="button" class="btn validate">Validate</button>
-        <button type="reset" class="btn cancel">Cancel</button>
-      </div>
     </form>
   </main>
 
   <footer>
     <p>&copy; 2024 ACI Money Transfer System. All rights reserved.</p>
   </footer>
+
+  <script>
+    // Retrieve transData from localStorage
+    const transData = JSON.parse(localStorage.getItem('transData')) || [];
+
+    // Function to get query parameter
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // Function to populate transaction details
+    function populateTransactionDetails(trn) {
+      const transaction = transData.find(txn => txn.trn === trn);
+      if (transaction) {
+        document.getElementById('amount').value = transaction.amount;
+        document.getElementById('currency').value = transaction.currency;
+        document.getElementById('message-type').value = transaction.messageType;
+        document.getElementById('credit-account').value = transaction.receiver;
+        // Populate other fields as needed
+      }
+    }
+
+    // Function to validate BIC
+    function isValidBIC(bic) {
+      const bicRegex = /^[A-Z]{4}[A-Z]{2}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3})?$/;
+      return bicRegex.test(bic);
+    }
+
+    // Function to show BIC validation message
+    function showBICValidationMessage() {
+      const creditAccount = document.getElementById('credit-account').value;
+      if (isValidBIC(creditAccount)) {
+        document.getElementById('bic-error-message').style.display = 'none';
+        document.getElementById('submitBtn').disabled = false;
+      } else {
+        document.getElementById('bic-error-message').style.display = 'block';
+        document.getElementById('submitBtn').disabled = true;
+      }
+    }
+
+    // Event listener for Validate button
+    document.getElementById('validateBtn').addEventListener('click', showBICValidationMessage);
+
+    // Event listener for Submit button
+    document.getElementById('submitBtn').addEventListener('click', function(event) {
+      event.preventDefault();
+      const trn = getQueryParam('trn');
+      const index = transData.findIndex(txn => txn.trn === trn);
+      if (index !== -1) {
+        transData.splice(index, 1);
+        localStorage.setItem('transData', JSON.stringify(transData));
+        alert('Transaction submitted successfully!');
+        window.location.href = 'translist.html';
+      }
+    });
+
+    // Initialize
+    const trn = getQueryParam('trn');
+    if (trn) {
+      populateTransactionDetails(trn);
+      showBICValidationMessage(); // Show BIC validation message on page load
+    }
+  </script>
 </body>
 </html>

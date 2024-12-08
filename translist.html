@@ -39,32 +39,26 @@
     <table class="queue-table">
       <thead>
         <tr>
-          <th>Priority</th>
-          <th>Bank</th>
-          <th>Location</th>
-          <th>Queue</th>
-          <th>Description</th>
+          <th>TRN</th>
+          <th>Sender ID/Debit Account</th>
+          <th>Receiver ID/Credit Account</th>
           <th>Amount</th>
-          <th>Count</th>
+          <th>Currency</th>
+          <th>Message Type</th>
+          <th>Bank</th>
+          <th>Operator</th>
         </tr>
       </thead>
-      <tbody id="queueData">
+      <tbody id="transData">
         <!-- Rows populated dynamically -->
       </tbody>
     </table>
-
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-      <button class="btn reset" id="resetButton">Reset</button>
-      <button class="btn detail" id="detailButton">Detail</button>
-      <button class="btn submit" id="submitButton">Submit</button>
-    </div>
   </main>
 
   <footer>
     <p>&copy; 2024 ACI Money Transfer System. All rights reserved.</p>
   </footer>
 
-  <script src="scripts.js"></script>
+  <script src="translistscript.js"></script>
 </body>
 </html>

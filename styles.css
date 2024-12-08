@@ -128,7 +128,11 @@ body {
     flex-wrap: wrap;
     justify-content: space-between;
   }
-  
+  .title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   fieldset {
     margin: 10px 0;
   }
@@ -258,7 +262,10 @@ body {
     button:hover {
       background-color: #003d66;
     }
-    
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
     button.cancel {
       background-color: #f44336;
     }
@@ -302,4 +309,20 @@ body {
     table tr:nth-child(even) {
       background-color: #f9f9f9;
     }
-    
+    .form-row {
+      display: flex;
+      align-items: center;
+    }
+  
+    .form-row label {
+      margin-right: 10px;
+    }
+  
+    .one-char-width {
+      width: 6ch; /* 2ch is enough to fit one character and some padding */
+      margin-right: 10px;
+    }
+  
+    .debit-account {
+      margin-left: 10px;
+    }
