@@ -1,5 +1,5 @@
 // Retrieve transData from localStorage
-let transData = JSON.parse(localStorage.getItem('transData')) || [];
+let transData = JSON.parse(localStorage.getItem('transactionData')) || [];
 
 // Function to populate transaction list based on selected priority
 function populateTransList() {

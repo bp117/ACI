@@ -246,7 +246,7 @@
 
   <script>
     // Retrieve transData from localStorage
-    const transData = JSON.parse(localStorage.getItem('transData')) || [];
+    const transData = JSON.parse(localStorage.getItem('transactionData')) || [];
 
     // Function to get query parameter
     function getQueryParam(param) {
@@ -294,7 +294,7 @@
       const index = transData.findIndex(txn => txn.trn === trn);
       if (index !== -1) {
         transData.splice(index, 1);
-        localStorage.setItem('transData', JSON.stringify(transData));
+        localStorage.setItem('transactionData', JSON.stringify(transData));
         alert('Transaction submitted successfully!');
         window.location.href = 'translist.html';
       }
